@@ -1,0 +1,4 @@
+<applet code="Controller" height="400" width="400" name="controller">
+</applet>
+<applet code="Controlled" height="400" width="400" name="controlled">
+</applet>

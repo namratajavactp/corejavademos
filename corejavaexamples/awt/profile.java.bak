@@ -1,0 +1,56 @@
+import java.awt.*;
+import java.awt.event.*;
+class profile extends Frame implements ActionListener
+{
+	Label name,mname,sname;
+	TextField getname,getmname,getsname,display;
+	Button submit;
+
+	profile(String title)
+	{
+		super(title);
+		setLayout(new FlowLayout());
+		name=new Label("ENTER YOUR NAME:");
+		mname=new Label("ENTER YOUR MIDDLE NAME:");
+		sname=new Label("ENTER YOUR SURNAME:");
+		getname=new TextField(20);
+		getmname=new TextField(20);
+		getsname=new TextField(20);
+		display=new TextField(100);
+        submit=new Button("SUBMIT");
+		add(name); add(getname);
+		add(mname); add(getmname);
+		add(sname); add(getsname);
+		add(submit);
+        add(display);
+    	submit.addActionListener(this);
+		
+	   addWindowListener(new WindowHandler());
+	   setVisible(true);
+	}
+
+public void actionPerformed(ActionEvent e)
+{
+	String s=getname.getText()+getmname.getText()+getsname.getText();
+     display.setText(s);
+
+}
+public static void main(String args[])
+{
+	profile b=new profile("YOUR PROFILE");
+}
+
+
+
+	class WindowHandler extends WindowAdapter
+	{
+
+		public void windowClosing(WindowEvent e) 
+		{
+			setVisible(false);
+			System.exit(0);
+	
+		}
+	}
+
+}

@@ -1,0 +1,9 @@
+grant {
+    permission java.lang.RuntimePermission
+       "accessClassInPackage.sun.jdbc.odbc";
+    permission java.util.PropertyPermission
+       "file.encoding", "read";
+  };
+
+
+appletviewer -J-Djava.security.policy="Grant Permission"  file.java

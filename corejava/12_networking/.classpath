@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="Datagram/|SimpleClientServer/" kind="src" path=""/>
+	<classpathentry kind="src" path="Datagram"/>
+	<classpathentry kind="src" path="SimpleClientServer"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="SimpleClientServer"/>
+</classpath>

@@ -1,0 +1,5 @@
+  <APPLET CODE="ParameterExample" WIDTH=200 HEIGHT=100> 
+  <param name="param1" value="Hello"> 
+  <param name="param2" value="14"> 
+  <param name="param3" value="2"> 
+ </APPLET> 

@@ -1,0 +1,118 @@
+/* To establish a common baseline, the AWT defines five logical font names:
+
+SansSerif
+Serif
+Monospaced
+Dialog
+DialogInput
+
+
+
+These names are always mapped to fonts that actually exist on the client machine. 
+For example, on a Windows system, SansSerif is mapped to Arial.
+
+
+To draw characters in a font, you must first create an object of the class Font. 
+You specify the font face name, the font style, and the point size. 
+Here is an example of how you construct a Font object:
+
+Font helvb14 = new Font("Helvetica", Font.BOLD, 14);
+
+The third argument is the point size.
+Points are commonly used in typography to indicate the size of a font. There are 72 points per inch. 
+
+
+You can use a logical font name in the place of a font face name in the Font constructor.
+You specify the style (plain, bold, italic, or bold italic) by setting the second Font constructor
+argument to one of the following values:
+
+Font.PLAIN
+Font.BOLD
+Font.ITALIC
+Font.BOLD + Font.ITALIC
+
+
+*/
+
+
+
+
+import java.awt.*;
+ import java.awt.geom.*;
+ import javax.swing.*;
+
+ public class FillTest
+ {
+    public static void main(String[] args)
+    {
+      FillFrame frame = new FillFrame();
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setVisible(true);
+    }
+ }
+
+ /**
+     A frame that contains a panel with drawings
+ */
+ class FillFrame extends JFrame
+ {
+    public FillFrame()
+   {
+       setTitle("FillTest");
+       setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+       // add panel to frame
+
+       FillPanel panel = new FillPanel();
+       add(panel);
+    }
+
+    public static final int DEFAULT_WIDTH = 400;
+    public static final int DEFAULT_HEIGHT = 400;
+ }
+
+ /**
+    A panel that displays filled rectangles and ellipses
+ */
+ class FillPanel extends JPanel
+ {
+    public void paintComponent(Graphics g)
+    {
+       super.paintComponent(g);
+	   setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+       Graphics2D g2 = (Graphics2D) g;
+
+	   Color cc=new Color(255,0,0);
+	   cc.brighter().brighter().brighter();
+
+		//	setForeground(Color.PINK);
+		setBackground(Color.PINK);
+			setForeground(cc);
+       // draw a rectangle
+
+       double leftX = 100;
+       double topY = 100;
+       double width = 200;
+       double height = 150;
+
+	   Font sansbold14 = new Font("SansSerif", Font.BOLD, 14);
+	   g2.setFont(sansbold14);
+	   String message = "Hello, World!";
+       g2.drawString(message, 75, 80);
+
+      
+    //   setBorder(BorderFactory.createLineBorder(Color.black));
+
+       Rectangle2D rect = new Rectangle2D.Double(leftX, topY, width, height);
+       g2.setPaint(Color.RED);
+       g2.fill(rect);
+
+       // draw the enclosed ellipse
+
+       Ellipse2D ellipse = new Ellipse2D.Double();
+       ellipse.setFrame(rect);
+       g2.setPaint(new Color(0,  128, 128)); // a dull blue-green
+       g2.fill(ellipse);
+    }
+ }
+

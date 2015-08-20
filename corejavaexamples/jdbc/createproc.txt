@@ -1,0 +1,12 @@
+ 
+ create table seedemp(empid number,sal number);
+
+
+create or replace procedure incr_sal_of_emp1(id in number,incr in number,incrsal in out number)
+ as
+ begin
+ select sal into incrsal from seedemp where empid=id;
+ incrsal := incrsal + incr;
+ update seedemp set sal=incrsal where empid=id;
+ end;
+ /

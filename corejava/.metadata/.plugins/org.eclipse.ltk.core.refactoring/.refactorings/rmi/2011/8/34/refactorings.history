@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move 4 elements to &apos;Rmi_Ex/src&apos;&#x0D;&#x0A;- Original project: &apos;rmi&apos;&#x0D;&#x0A;- Destination element: &apos;Rmi_Ex/src&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     AddServer.java&#x0D;&#x0A;     AddServerIntf.java&#x0D;&#x0A;     AddClient.java&#x0D;&#x0A;     AddServerImpl.java&#x0D;&#x0A;- Update references to refactored element" description="Move compilation units" destination="=Rmi_Ex/src" element1="/&lt;{AddServer.java" element2="/&lt;{AddServerIntf.java" element3="/&lt;{AddClient.java" element4="/&lt;{AddServerImpl.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1313483372224" units="4" version="1.0"/>
+</session>

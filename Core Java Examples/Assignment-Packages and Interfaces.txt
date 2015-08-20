@@ -1,0 +1,12 @@
+Design a class for bank which supports the following operations:
+•	depositing into an account
+•	withdrawing from an account
+•	finding the balance 
+•	transferring balance from one account to another
+The accounts are identified by instances of a class Account, which resides in a package called com.bank records. The depositing, withdrawing and amount specifying  operations should not have any implementation. However, allow subclasses to provide the implementation. 
+
+The transferring operation should use the depositing and withdrawing operations to implement the transfer. It should not be possible to alter this operation in any subclass, and only classes within the package com.bank should be able allowed to use this operation. 
+
+The depositing and withdrawing operations should be available from anywhere. 
+
+Define a class in another package com.bank.system which will perform the above operations for a given  Account.

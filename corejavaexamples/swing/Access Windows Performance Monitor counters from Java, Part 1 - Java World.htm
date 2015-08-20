@@ -1,0 +1,1098 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0068)http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html -->
+<HTML><HEAD><TITLE>Access Windows Performance Monitor counters from Java, Part 1 - Java World</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
+<SCRIPT language=JavaScript>
+			var topicid = 1; 
+		    subtopicid = 98; 
+		</SCRIPT>
+
+<SCRIPT>
+			function HighlightText(divid){
+			var code = document.body.createTextRange();
+			code.moveToElementText(document.getElementById('codewrap' + divid));
+			code.execCommand("SelectAll");
+			code.execCommand("Copy");
+			} 
+		</SCRIPT>
+
+<META content=1 name=TopicID>
+<META content=98 name=SubTopicID>
+<META content="Java World" name=channels>
+<META 
+content="Windows NT, 2000, 2003, and XP contain a utility called the&#10;Performance Monitor that provides a rich array of performance data&#10;on your hosts as well as the applications they support. However,&#10;accessing this data from Java is challenging. This article&#10;summarizes a method to reliably access this data in real time using&#10;a small but elegant Java API. A follow up to this article will&#10;describe how you can integrate these statistics into a Java&#10;Management Extensions (JMX) infrastructure and present the benefits&#10;that JMX provides. &#10;&#10;Read the whole series on Windows Performance Monitor:&#10;&#10;&#10;&#10;Part 1: Use a simple Java API to gather valuable performance&#10;statistics&#10;&#10;&#10;Part 2: Integrate NSClient4j with Java Management&#10;Extensions" 
+name=description>
+<META 
+content="Java Standard Edition,Windows Performance Monitor Java Nagios Net Saint NSClient Monitor" 
+name=keywords>
+<META content=News name=contenttype>
+<META content=2004-11-08 name=publicationDate>
+<META content="Nicholas Whitehead" name=author>
+<META content=JavaWorld.com name=publisher>
+<META http-equiv=expires content=0>
+<META http-equiv=Pragma content=no-cache><!-- SSI Error --><!-- put the # sign in the comment below to go live -->
+<STYLE>#reg {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; BACKGROUND: #ebe7d9; PADDING-BOTTOM: 5px; PADDING-TOP: 5px
+}
+</STYLE>
+
+<SCRIPT language=javascript>
+  var outerref = new String("http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html");
+  var nwchannel = 'jw';
+  var refresh = 0;
+  
+  var jq_rxid = '81086';
+</SCRIPT>
+
+<SCRIPT 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/head-scripts.js"></SCRIPT>
+<!-- HBX -->
+<SCRIPT language=javascript1.1>
+var _hbEC=0,_hbE=new Array;function _hbEvent(a,b){b=_hbE[_hbEC++]=new Object();b._N=a;b._C=0;return b;}
+var hbx=_hbEvent("pv");hbx.vpc="HBX0103u";hbx.gn="a.javaworld.com";
+var doctitle = hbxStrip(document.title);
+var loc = new String(document.location.href);
+loc = hbxStrip(loc);
+
+hbx.acct="DM54120129AB;DM550210NGWB";
+hbx.pn="PUT+PAGE+NAME+HERE";
+hbx.mlc="CONTENT+CATEGORY";
+hbx.pndef="title";
+hbx.ctdef="full";
+hbx.lvm="300";
+hbx.lidt="txl";
+
+hbx.fv="";//FORM VAL MIN
+hbx.lt="auto"; //LINK TR
+hbx.dlf="n";//Dl FILTER
+hbx.dft="n";//Dl FILE NAMING
+hbx.elf="n";//EXIT LINK FILTER
+
+hbx.seg="-1";
+hbx.ci="";
+hbx.hc1="jw_core|";
+hbx.hc2=keywords+"|"+doctitle;
+hbx.hc3=author+"|"+doctitle;
+hbx.hc4=doctitle+"|"+author;
+hbx.pec="";//ERROR CODES
+</SCRIPT>
+
+<SCRIPT language=javascript1.1 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/hbx.js"></SCRIPT>
+<!--END HBX --><!-- Start Quantcast tag -->
+<SCRIPT 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/quant.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_qoptions = {
+            tags:"nww"
+};
+_qacct="p-25K88fxDSEn9Y";quantserve();</SCRIPT>
+<NOSCRIPT></HEAD>
+<BODY onload=init()><A href="http://www.quantcast.com/p-25K88fxDSEn9Y" 
+target=_blank><IMG style="DISPLAY: none" height=1 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/p-25K88fxDSEn9Y.gif" 
+width=1 border=0></A></NOSCRIPT> <!-- End Quantcast tag --><!--
+channels: jw
+keywords (topics): Java Standard Edition
+contenttype (tasks): News
+site: jw_core
+pagename: core
+keyval: core
+ibsearch: (none)
+--><LINK 
+href="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/adstyles.css" 
+type=text/css rel=stylesheet><LINK 
+href="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-main.css" 
+type=text/css rel=stylesheet><!--stopindex-->
+<DIV id=wrapper>
+<DIV id=bannerarea>
+<DIV id=mainbanner>
+<SCRIPT> bannersrc = "http://ad.doubleclick.net/adi/idg.us.nwf.jw_core/;pos=top;sz=728x90;ptile=1;type=news;ord=022653?";</SCRIPT>
+<!--stopindex--><!-- begin ad tag --><NOLAYER><IFRAME id=banner border=0 
+marginWidth=0 marginHeight=0 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/;pos=top;sz=728x90;ptile=1;type=news;ord=020429.htm" 
+frameBorder=no width=728 scrolling=no 
+height=90>
+<A href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;abr=!ie;pos=top;sz=728x90;ptile=1;type=news;ord=022653?">
+<IMG src="http://ad.doubleclick.net/ad/idg.us.nwf.jw_core/;abr=!ie;pos=top;sz=728x90;ptile=1;type=news;ord=022653?" border="0" width="728" height="90"></A>
+</IFRAME></NOLAYER><ILAYER 
+id=banner height="90" width="728" visibility="hidden"></ILAYER><!-- end ad tag --></DIV>
+<DIV class=separator><!-- xxxxxxxxxxxxxx --></DIV>
+<DIV id=masthead>
+<DIV id=logoarea><A href="http://www.javaworld.com/"><IMG height=58 
+alt=JavaWorld 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-logo.gif" 
+width=201 border=0></A> </DIV>
+<DIV id=searcharea>
+<FORM accept-charset=iso-8859-1 
+action=http://www.javaworld.com/ifind/java/query.html method=get><INPUT 
+type=hidden value=0 name=qm> <INPUT type=hidden value=1 name=st> <INPUT 
+type=hidden value=10 name=nh> <INPUT type=hidden value=java name=col> 
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><INPUT class=formfield maxLength=1991 name=qt></TD>
+    <TD><INPUT class=submit type=image alt=Search 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/lw-search-button.gif" 
+      value=Go name=""></TD>
+    <TD><SPAN><A 
+      href="http://www.javaworld.com/ifind/java/query.html?col=java&amp;qs=&amp;qc=&amp;si=0&amp;ql=a&amp;nh=25&amp;lk=1&amp;rf=0">Advanced 
+      search</A></SPAN></TD></TR></TBODY></TABLE></FORM></DIV></DIV>
+<DIV class=separator><!-- xxxxxxxxxxxxxx --></DIV></DIV><!--Start Menu-->
+<SCRIPT language=javascript 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/lookup_topic.js" 
+xml:space="preserve"> </SCRIPT>
+
+<DIV id=toolbar><IMG height=15 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-logo-tagline.gif" 
+width=125>
+<DIV id=medallion><!-- begin ad tag -->
+<TABLE cellSpacing=0 cellPadding=0 width=125 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <SCRIPT language=JavaScript1.1 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/;pos=n1;sz=120x90;ptile=2;type=news;ord=022653"></SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+if ((!document.images && navigator.userAgent.indexOf("Mozilla/2.") >= 0)  || navigator.userAgent.indexOf("WebTV")>= 0) {
+document.write('<A HREF="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;pos=n1;sz=120x90;ptile=2;type=news;ord=022653?" TARGET="_blank">');
+document.write('<IMG SRC="http://ad.doubleclick.net/ad/idg.us.nwf.jw_core/;pos=n1;sz=120x90;ptile=2;type=news;ord=022653?" WIDTH="120" HEIGHT="90" BORDER="0" ALT="Click Here"></A>');
+}
+</SCRIPT>
+<NOSCRIPT><A 
+href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;pos=n1;sz=120x90;ptile=2;type=news;ord=022653?" 
+target=_blank><IMG height=90 alt="alt text" 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/817-grey.gif" 
+width=120 border=0>Click Here</A> </NOSCRIPT><!-- end ad tag -->
+<DIV></DIV></DIV>
+<DIV id=toolbarhome>
+<UL>
+  <LI class="" id=hmbar><A href="http://www.javaworld.com/index.html" 
+  shape=rect>Home</A></LI></UL></DIV>
+<UL>
+  <LI class=research><A href="http://www.javaworld.com/topics/index.html" 
+  shape=rect>Research Centers</A></LI></UL>
+<DIV id=toolbar_rc>
+<UL class=botbar>
+  <LI class=nobracket id=navbar1><A class="" id=linknav1 
+  href="http://www.javaworld.com/channel_content/jw-core-index.html" 
+  shape=rect><SPAN class=toolbar-red id=showplus1>+ </SPAN>Java Standard 
+  Edition</A>
+  <DIV id=toolbar_rcsubs1>
+  <UL>
+    <LI class="" id=subnav98><A 
+    href="http://www.javaworld.com/channel_content/jw-apis-index.html" 
+    shape=rect>APIs</A>
+    <LI class="" id=subnav105><A 
+    href="http://www.javaworld.com/channel_content/jw-awt-index.html" 
+    shape=rect>AWT / Swing</A>
+    <LI class="" id=subnav108><A 
+    href="http://www.javaworld.com/channel_content/jw-patterns-index.html" 
+    shape=rect>Design Patterns</A>
+    <LI class="" id=subnav37><A 
+    href="http://www.javaworld.com/channel_content/jw-ui-index.html" 
+    shape=rect>User Interface Design</A>
+    <LI class="" id=subnav13><A 
+    href="http://www.javaworld.com/channel_content/jw-jdbc-index.html" 
+    shape=rect>Java Database Connectivity (JDBC)</A>
+    <LI class="" id=subnav103><A 
+    href="http://www.javaworld.com/channel_content/jw-jvm-index.html" 
+    shape=rect>Java Virtual Machine (JVM)</A>
+    <LI class="" id=subnav65><A 
+    href="http://www.javaworld.com/columns/jw-qna-index.html" shape=rect>Java 
+    Q&amp;A</A>
+    <LI class="" id=subnav57><A 
+    href="http://www.javaworld.com/columns/jw-tips-index.html" shape=rect>Java 
+    Tips</A></LI></UL></DIV>
+  <LI class=nobracket id=navbar2><A class="" id=linknav2 
+  href="http://www.javaworld.com/channel_content/jw-enterprise-index.html" 
+  shape=rect><SPAN class=toolbar-red id=showplus2>+ </SPAN>Java Enterprise 
+  Edition</A>
+  <DIV id=toolbar_rcsubs2>
+  <UL>
+    <LI class="" id=subnav8><A 
+    href="http://www.javaworld.com/channel_content/jw-ejbs-index.html" 
+    shape=rect>Enterprise JavaBeans (EJBs)</A>
+    <LI class="" id=subnav16><A 
+    href="http://www.javaworld.com/channel_content/jw-message-index.html" 
+    shape=rect>Java Message Service</A>
+    <LI class="" id=subnav14><A 
+    href="http://www.javaworld.com/channel_content/jw-jsp-index.html" 
+    shape=rect>JavaServer Pages</A>
+    <LI class="" id=subnav19><A 
+    href="http://www.javaworld.com/channel_content/jw-servlets-index.html" 
+    shape=rect>Servlets</A>
+    <LI class="" id=subnav9><A 
+    href="http://www.javaworld.com/channel_content/jw-webserv-index.html" 
+    shape=rect>Web Services and SOAs</A>
+    <LI class="" id=subnav10><A 
+    href="http://www.javaworld.com/channel_content/jw-xml-index.html" 
+    shape=rect>Java and XML</A>
+    <LI class="" id=subnav30><A 
+    href="http://www.javaworld.com/channel_content/jw-design-index.html" 
+    shape=rect>Design Patterns</A>
+    <LI class="" id=subnav31><A 
+    href="http://www.javaworld.com/channel_content/jw-performance-index.html" 
+    shape=rect>Performance Tuning</A></LI></UL></DIV>
+  <LI class=nobracket id=navbar3><A class="" id=linknav3 
+  href="http://www.javaworld.com/channel_content/jw-micro-index.html" 
+  shape=rect><SPAN class=toolbar-red id=showplus3>+ </SPAN>Java Micro 
+Edition</A>
+  <DIV id=toolbar_rcsubs3>
+  <UL></UL></DIV>
+  <LI class=nobracket id=navbar4><A class="" id=linknav4 
+  href="http://www.javaworld.com/channel_content/jw-applied-index.html" 
+  shape=rect><SPAN class=toolbar-red id=showplus4>+ </SPAN>Development Tools</A>
+  <DIV id=toolbar_rcsubs4>
+  <UL>
+    <LI class="" id=subnav38><A 
+    href="http://www.javaworld.com/channel_content/jw-amt-index.html" 
+    shape=rect>Application Management</A>
+    <LI class="" id=subnav41><A 
+    href="http://www.javaworld.com/channel_content/jw-dataaccesstools-index.html" 
+    shape=rect>Data Access Tools</A>
+    <LI class="" id=subnav44><A 
+    href="http://www.javaworld.com/channel_content/jw-gamingtools-index.html" 
+    shape=rect>Gaming Tools</A>
+    <LI class="" id=subnav21><A 
+    href="http://www.javaworld.com/channel_content/jw-webdev-index.html" 
+    shape=rect>Web Development Frameworks</A>
+    <LI class="" id=subnav110><A 
+    href="http://www.javaworld.com/channel_content/jw-security-testing-index.html" 
+    shape=rect>Security &amp; Testing</A>
+    <LI class="" id=subnav12><A 
+    href="http://www.javaworld.com/channel_content/jw-appserv-index.html" 
+    shape=rect>Java Application Servers</A>
+    <LI class="" id=subnav48><A 
+    href="http://www.javaworld.com/channel_content/jw-profilingtools-index.html" 
+    shape=rect>Profiling and Monitoring</A>
+    <LI class="" id=subnav49><A 
+    href="http://www.javaworld.com/channel_content/jw-reportingtools-index.html" 
+    shape=rect>Reporting</A></LI></UL></DIV></LI></UL></DIV><!-- use li class=current1 to hightlight the items below-->
+<UL class=botbar>
+  <LI class=toplevel2><A 
+  href="http://www.javaworld.com/resources/site-resources.html">Site 
+  Resources</A> 
+  <LI class="" id=sr87><A 
+  href="http://www.javaworld.com/features/index.html">Featured Tutorials</A> 
+  <LI class="" id=sr89><A 
+  href="http://www.javaworld.com/news-reviews/index.html">News &amp; Reviews</A> 
+
+  <LI class="" id=sr990><A 
+  href="http://www.javaworld.com/javaforums/ubbthreads.php?Cat=2&amp;C=2">Forums</A> 
+
+  <LI class="" id=sr993><A 
+  href="http://www.javaworld.com/podcasts/jtech/">Podcasts</A> 
+  <LI class="" id=sr991><A 
+  href="http://www.javaworld.com/newsletter/">Newsletters</A> 
+  <LI class="" id=sr95><A 
+  href="http://www.javaworld.com/white-paper/index.html">White Paper Library</A> 
+
+  <LI class="" id=sr199><A 
+  href="http://www.javaworld.com/resources/index.html">Web resources</A> 
+  <LI class="" id=sr992><A href="http://www.javaworld.com/rss/index.html">RSS 
+  Feeds</A> </LI></UL>
+<UL class=botbar>
+  <LI class=toplevel2><A href="http://javaworld.4jobs.com/">Careers</A> </LI></UL>
+<DIV class=toolspace><!--3px of space--></DIV>
+<UL class=botbar>
+  <LI class=toplevel2><A href="http://www.javaworld.com/partners.html">Partner 
+  Sites</A> 
+  <LI><A href="http://www.demo.com/">Demo.com</A> 
+  <LI><A href="http://www.linuxworld.com/">LinuxWorld.com</A> 
+  <LI><A href="http://www.networkworld.com/">NetworkWorld.com</A> </LI></UL>
+<UL>
+  <LI class=toplevel2><A 
+  href="http://www.javaworld.com/info/jw-about-index.html">About Us</A> </LI></UL>
+<SCRIPT 
+language=javascript>if (typeof menu_lookup == "function") menu_lookup();</SCRIPT>
+<BR>
+<DIV id=techwords style="BACKGROUND-COLOR: #ffffff">
+<H6>sponsored links</H6><A href="http://www.techwords.com/">See your link 
+here.</A>
+<SCRIPT type=text/javascript>
+		adsonar_placementId=1268728;
+		adsonar_pid=462761;
+		adsonar_ps=1424789;
+		adsonar_zw=120;
+		adsonar_zh=600;
+		adsonar_jv='ads.adsonar.com';
+		</SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/adsonar.js"></SCRIPT>
+ </DIV></DIV>
+<DIV class=rc id=contentarea>
+<DIV id=rcheader><!--startindex-->
+<DIV id=toptabs>
+<UL>
+  <LI><A href="http://www.javaworld.com/channel_content/jw-core-index.html">Java 
+  Standard Edition</A> </LI></UL></DIV><!--stopindex--></DIV>
+<DIV id=idglogin><!-- xxxxxxxxxxxxxx --></DIV>
+<DIV id=sectionhome>
+<DIV id=a-e_col1>
+<DIV id=d-e_col2b>
+<DIV id=d-e-1>
+<DIV id=tabs>
+<UL>
+  <LI class=ts><A class=ts id=topstories_a 
+  href="javascript:opentab('topstories');">Best of JavaWorld</A> </LI>
+  <LI class=saved><A class=saved id=savedarticles_a 
+  href="javascript:opentab('savedarticles');">Editor's Choice</A> </LI></UL></DIV>
+<DIV id=topstories>
+<P xmlns:w="urn:www.microsoft.com/word" 
+xmlns:st1="urn:www.microsoft.com/smarttags" 
+xmlns:o="urn:www.microsoft.com/office"><A 
+href="http://www.javaworld.com/javaworld/jw-05-2003/jw-0523-calltag.html"><B>Call 
+JavaBean methods from JSP 2.0 pages</B></A><BR><EM>By Andrei Cioroianu, May 
+2003</EM><BR>JSP's backward compatibility allows you to include Java snippets in 
+your pages, but you're better off using tag handlers and JavaBean components for 
+Java-based functionality. </P></DIV>
+<DIV id=savedarticles>
+<P xmlns:w="urn:www.microsoft.com/word" 
+xmlns:st1="urn:www.microsoft.com/smarttags" 
+xmlns:o="urn:www.microsoft.com/office"><B>Closures in Java 7</B><BR>The momentum 
+behind closures in Java 7 is growing, so the time has come to ask: are you in 
+favor of inclusion or not? If yes, which proposal are you rooting for and 
+why?<BR><A 
+href="http://www.javaworld.com/javaforums/showflat.php?Cat=2&amp;Number=96044"><B>Speak 
+up: Join the JavaWorld discussion about closures in Java 
+7</B></A></P></DIV></DIV>
+<SCRIPT type=text/javascript>
+divnames = new Array('topstories', 'savedarticles'); <!--,'topstories'-->
+opentab("savedarticles");
+
+function opentab(divname) {	;
+	if(document.getElementById(divname)) {
+		for (i=0;i < 2;i++) {	<!-- 2-->
+			var aname = divnames[i] + '_a';		
+			if (divnames[i] == divname)	{	
+				tab=divname;		    
+				document.getElementById(divname).style.display='block';
+				document.getElementById(aname).parentNode.id = "current";	
+			}
+			else {
+				document.getElementById(divnames[i]).style.display='none';
+				document.getElementById(aname).parentNode.id = "none";
+			}
+		}
+	}
+}
+</SCRIPT>
+
+<DIV class=imu><!--stopindex-->
+<SCRIPT language=JavaScript>
+<!--
+var imuvar;
+myImage = new Image();
+myImagef = new Image();
+function resize(){
+	//return; //just comment this out to activate the resize function
+	imuvar = document.getElementById("imu");
+	myImage.src = "http://www.javaworld.com/ads/halfpage.jsp?get=true&ord=022653";
+	setTimeout("getSize()",300);
+	setTimeout("finalSize()",1200);
+}
+
+function finalSize(){
+	if (imuvar.height < 600) {
+		imuvar = document.getElementById("imu");
+		myImagef.src = "http://www.javaworld.com/ads/halfpage.jsp?get=true&ord=1022653";
+		getSizef();
+	}
+}
+
+function getSizef() {
+    if (myImagef.height == 0) setTimeout("getSizef()",200);	
+	if (myImagef.height == 600) imuvar.height=600;
+}
+
+function getSize() {
+    if (myImage.height == 0) setTimeout("getSize()",200);	
+	if (myImage.height == 600) imuvar.height=600;
+}
+//-->
+</SCRIPT>
+<NOLAYER><IFRAME id=imu border=0 marginWidth=0 marginHeight=0 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/CA7ATC5B.jsp" 
+frameBorder=no width=336 scrolling=no onload=resize() 
+height=280>
+  <A href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;abr=!ie;pos=imu;sz=336x280;ptile=3;type=news;ord=022653?">
+  <IMG src="http://ad.doubleclick.net/ad/idg.us.nwf.jw_core/;abr=!ie;pos=imu;sz=336x280;ptile=3;type=news;ord=022653?" border="0" width="336" height="280"></A>
+  </IFRAME></NOLAYER><ILAYER 
+id=imu height="280" width="336" visibility="hidden"></ILAYER>
+<SCRIPT> imusrc = "http://ad.doubleclick.net/adi/idg.us.nwf.jw_core/;pos=imu;sz=336x280;ptile=3;type=news;ord=";</SCRIPT>
+</DIV>
+<DIV id=rclib-de1>
+<H5 class=rclibde><B>Featured Whitepapers</B> </H5>
+<TABLE class=rclib-detable cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=rclib-dealt><A 
+      href="http://adserver.fattail.com/redir/redirect.asp?CID=253702">The Four 
+      Requirements of Next Generation Web Performance Management</A> </TD></TR>
+  <TR>
+    <TD><A 
+      href="http://adserver.fattail.com/redir/redirect.asp?CID=252238">Automating 
+      Excel Reports: Five Approaches</A> </TD></TR>
+  <TR>
+    <TD class=rclib-dealt><A 
+      href="http://adserver.fattail.com/redir/redirect.asp?CID=252239">Java: 
+      Four Server-based Approaches</A> </TD></TR></TBODY></TABLE></DIV><!-- nl signup start-->
+<FORM id=Form2 name=form onsubmit=openNewWindow() 
+action=http://www.subscribenw.com/nl/Signup.do method=post target=new_window>
+<DIV id=newsletter>
+<H5>Newsletter sign-up</H5>
+<P class=nl>Sign up for our technology specific newsletters.</P>
+<TABLE cellSpacing=0 cellPadding=0 width=300 border=0>
+  <TBODY>
+  <TR>
+    <TD class=bgleft vAlign=top width=27><INPUT id=NL70 type=checkbox 
+      name=NL70></TD>
+    <TD class=bgright width=265><A 
+      href="javascript:openWindow('http://www.subscribenw.com/nl/popup.jsp?id=70',500,300);">Enterprise 
+      Java</A></TD></TR>
+  <TR>
+    <TD colSpan=2><A 
+      href="http://www.subscribenw.com/nl/signup.jsp?keycode=JW07">View all 
+      newsletters</A></TD></TR></TBODY></TABLE>
+<HR color=#cccccc noShade SIZE=1>
+<STRONG>Email Address:</STRONG> <INPUT id=keycode type=hidden value=NLmsu08 
+name=keycode> <INPUT id=call type=hidden value=instant name=call> <INPUT 
+type=hidden value=121 name=pid> <INPUT size=14 name=email> <INPUT id=Submit1 type=submit alt=Submit value=Subscribe name=Button> 
+</DIV></FORM><!--include virtual="/includes/topic/core-nl-signup.html"-->
+<DIV>
+<SCRIPT 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jsct" 
+type=text/javascript></SCRIPT>
+</DIV>
+<DIV id=de5><!-- begin ad tag -->
+<SCRIPT language=JavaScript1.1 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/;pos=de5;sz=336x175;tile=5;ord=022653"></SCRIPT>
+
+<SCRIPT>
+if ((!document.images && navigator.userAgent.indexOf("Mozilla/2.") >= 0)  || navigator.userAgent.indexOf("WebTV")>= 0) {
+document.write('<A HREF="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;pos=de5;sz=336x175;tile=5;ord=022653?" TARGET="_blank">');
+document.write('<IMG SRC="http://ad.doubleclick.net/ad/idg.us.nwf.jw_core/;pos=de5;sz=336x175;tile=5;ord=022653?" WIDTH="336" HEIGHT="175" BORDER="0" ALT="Click Here"></A>');
+}
+</SCRIPT>
+<NOSCRIPT><A 
+href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;pos=de5;sz=336x175;tile=5;ord=022653?" 
+target=_blank><IMG height=175 alt="alt text" 
+src="Z:\javabatch\today\swing\Access Windows Performance Monitor counters from Java, Part 1 - Java World_files\817-grey(1).gif" 
+width=336 border=0>Click Here</A> </NOSCRIPT><!-- end ad tag --></DIV><!-- SSI Error --></DIV>
+<DIV class=breadcr><A 
+href="http://www.javaworld.com/index.html">JavaWorld.com</A> &gt; <A 
+href="http://www.javaworld.com/channel_content/jw-core-index.html">Java Standard 
+Edition</A> &gt;</DIV>
+<DIV><!--HEADLINE GOES HERE--><!--startindex--><A id=top name=top></A>
+<H1>Access Windows Performance Monitor counters from Java, Part 1</H1>
+<H3>Use a simple Java API to gather valuable performance statistics</H3>
+<P class=byline>By&nbsp;Nicholas 
+Whitehead,&nbsp;JavaWorld.com,&nbsp;11/08/04</P><!-- CONTENT GOES HERE-->
+<P class=first>For those running Java applications or services, the Windows 
+Performance Monitor (WPM) contains a treasure trove of valuable information—see 
+Figure 1. There are hundreds (or thousands) of performance statistics called 
+<EM>counters</EM> that are available in real time and measure critical system 
+performance factors. This article outlines a simple way to access those 
+performance statistics from Java. </P>
+<CENTER>
+<P><A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/images/jw-1108-windowspm1.jpg" 
+target=new_window 
+alt="Figure 1. Windows Performance Manager. Click on thumbnail to view full-sized image."><IMG 
+height=229 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm1-thumb.jpg" 
+width=350></A></P>
+<P><STRONG>Figure 1. Windows Performance Manager. Click on thumbnail to view 
+full-sized image.</STRONG></P></CENTER>
+<P>The problem is that accessing WPM can be quite challenging as it is a native 
+Windows service and few, if any, Java APIs are available for accessing the 
+information it provides from Java. Some research revealed three main ways of 
+reading the WPM data with Java: </P>
+<UL>
+  <LI><EM>Configure WPM to log specific performance counters:</EM> WPM can take 
+  a configurable set of counters and log them to a file on a configured 
+  frequency. Windows XP and Windows 2003 also allow WPM data to be logged 
+  directly to an ODBC (Open Database Connectivity) datasource. Once this data 
+  has been logged to its final destination, it should be trivial enough to read 
+  the logging file using the <CODE>java.io</CODE> or <CODE>java.nio</CODE> 
+  packages. If you are fortunate enough to be able to log directly to an ODBC 
+  datasource, then the WPM counter data will be accessible through the 
+  <CODE>java.sql</CODE> JDBC (Java Database Connectivity) packages. The 
+  deficiencies of this approach are:<BR><BR>
+  <UL>
+    <LI><EM>No real time or frequency control:</EM> With this approach, you 
+    cannot simply request data when you want it. You must wait for WPM to log a 
+    counter to the persisted source. Then you must go out and get the data. 
+    These two factors typically involve some sort of polling process, which 
+    grows tiresome since you cannot get some data exactly when you want it, and 
+    you will get other data even when you don't want it. Worst of all, you may 
+    spend more time grappling with I/O or JDBC issues than you will actually 
+    reading WPM counter data. 
+    <LI><EM>Inflexible counter configuration:</EM> Every time you decide to add 
+    or remove a counter to the list persisted to the WPM counter log, you will 
+    need to go to the WPM console and reconfigure the logging options. This may 
+    also require a configuration (or code) change in your monitor application 
+    that retrieves data from the persisted store. </LI></UL>
+  <LI><EM>Native (Java Native Interface) interface to WPM:</EM> I have to fess 
+  up and say I generally hate working with Windows-native APIs. Any day of the 
+  week, I would rather hook into a nice Java jar file than a nasty dynamic link 
+  library hidden three layers deep. However, if you enjoy this sort of thing, 
+  several resources are available for guiding you through using a native 
+  interface to read WPM counters from Java. They usually involve either using 
+  Microsoft's own JVM with its native Windows interfaces or using JNI to 
+  directly communicate with the Windows-native API. Say what you will about 
+  proprietary Microsoft Java technology, it is certainly not portable. As far as 
+  the JNI solutions go, they appear to need constant changes depending on the 
+  versions of Windows and Java you use. The end product is not particularly 
+  portable either, since it will only run on Win32. 
+  <LI><EM>WMI:</EM> Windows Management Interface is a scripting interface to the 
+  management internals of all Win32 platforms since Windows 98. Some analogize 
+  it with Java Management Extensions (JMX) for Windows. WMI makes all sorts of 
+  Win32 internals accessible, including WPM counters. The integration of WMI and 
+  Java is not provided for, with the exception of Microsoft's proprietary Java 
+  VM implementation. </LI></UL><BR><BR>
+<P>A simple and pure Java API provides a better approach for accessing WPM.</P>
+<H3>NSClient4j</H3>
+<P>NSClient4j is a pure Java client that provides a simple API for accessing WPM 
+performance counter data. It uses a Windows service called <A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html#resources"><EM>NSClient</EM></A>. 
+NSClient was originally written as a plug-in component for a system called <A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html#resources">Nagios</A>, 
+which is a system-monitoring package that runs on Linux. Nagios is a larger 
+monitoring and alerting system that needed a solution for querying NT 
+performance statistics from Linux, and, as a result, NSClient was born. Figure 2 
+outlines how Nagios works. </P>
+<CENTER>
+<P><A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/images/jw-1108-windowspm2.jpg" 
+target=new_window 
+alt="Figure 2. What Nagios does. Click on thumbnail to view full-sized image."><IMG 
+height=120 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm2-thumb.jpg" 
+width=350></A></P>
+<P><STRONG>Figure 2. What Nagios does. Click on thumbnail to view full-sized 
+image.</STRONG></P></CENTER>
+<P>NSClient is a native Windows service that listens on a configurable port for 
+requests, receives requests, looks up the corresponding WPM counter value (among 
+other things), and returns the value as a simple string. In its original 
+inception, it was called by a native Linux Nagios plug-in called 
+<EM>checknt</EM>. However, since the protocol is fairly straightforward, and 
+Java can manage communication through sockets, NSClient4j is simply a Java class 
+that communicates with NSClient. Using the Java API, a developer can connect to 
+NSClient, issue a request for a WPM counter value, and read the response—see 
+Figure 3. </P>
+<CENTER>
+<P><A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/images/jw-1108-windowspm3.jpg" 
+target=new_window 
+alt="Figure 3. Relationship between NSClient and NSClient4j. Click on thumbnail to view full-sized image."><IMG 
+height=79 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm3-thumb.jpg" 
+width=350></A></P>
+<P><STRONG>Figure 3. Relationship between NSClient and NSClient4j. Click on 
+thumbnail to view full-sized image.</STRONG></P></CENTER>
+<P>In Figure 3, NSClient4j asks the NT system how many context switches 
+currently occur per second. Since NSClient4j is pure Java, it can run on any 
+platform with a supported JVM. Figure 4 shows a class diagram of NSClient4j's 
+main classes. </P>
+<CENTER>
+<P><A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/images/jw-1108-windowspm4.gif" 
+target=new_window 
+alt="Figure 4. NSClient4j class diagram. Click on thumbnail to view full-sized image."><IMG 
+height=350 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm4-thumb.gif" 
+width=276></A></P>
+<P><STRONG>Figure 4. NSClient4j class diagram. Click on thumbnail to view 
+full-sized image.</STRONG></P></CENTER>
+<H3>Install NSClient</H3>
+<P>Before we get into some examples of how to use NSClient4j, let's review how 
+to install NSClient, since it is a prerequisite. Installing NSClient is simple: 
+</P>
+<OL>
+  <LI>Download NSClient from <A 
+  href="http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html#resources">Resources</A>. 
+
+  <LI>The latest version, as of this writing, is 1.07.1, so you will need to 
+  unzip the file Distrib-1.07.1.zip into a dedicated directory on your target 
+  (to be monitored) Windows system. 
+  <LI>Navigate to that directory in a command shell. This example will assume 
+  you have unzipped the file into <CODE>C:\NSClient</CODE>. 
+  <LI>Depending on whether you are running Windows NT 4 or Windows 2000/2003/XP, 
+  navigate into the directory <CODE>Win_NT4_Bin</CODE> or 
+  <CODE>Win_2k_XP_Bin</CODE>, respectively. 
+  <LI>Execute the command <CODE>pNSClient.exe /install</CODE>. You should see a 
+  message pop up like this:<BR><BR>
+  <CENTER>
+  <P><IMG height=129 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm5.jpg" 
+  width=211></P>
+  <P><STRONG>Figure 5. Successful install message</STRONG></P></CENTER>
+  <LI>To later uninstall it, you can execute <CODE>pNSClient.exe 
+  /uninstall</CODE>. 
+  <LI>The service is now installed and must be started. To do this, you can 
+  execute the command <CODE>net start NSClient</CODE> or go to the services 
+  applet in the Administrative Control panel for Windows and start the service 
+  named Net Saint NT Agent. </LI></OL><BR><BR>
+<P>Now that NSClient is installed, we're ready to test NSClient4j.</P>
+<H3>Command line example of NSClient4j</H3>
+<P>The following example shows how to code a simple command line client that 
+displays the WPM counter value for the passed host name and counter name. There 
+are two phases to getting a WPM counter reading: </P>
+<OL>
+  <LI>Connect to the target NSClient in one of the constructors to the 
+  <CODE>NSClient4j</CODE> class. There is one mandatory parameter, the host name 
+  (or IP address). The optional parameters are the port number and password. The 
+  port number defaults to <CODE>1248</CODE> and password defaults to 
+  <CODE>None</CODE> but, for security considerations, these can be changed. See 
+  "A Final Note on Securing NSClient" below. Accordingly, the constructor 
+  options are as follows:<BR><BR>
+  <DIV id=codewrap>
+  <DIV id=codewrap89><PRE> <CODE>public NSClient4j(String hostName) throws NSClient4JException
+public NSClient4j(String hostName, int portNumber) throws NSClient4JException
+public NSClient4j(String hostName, int portNumber, String password)  throws NSClient4JException
+public NSClient4j(String hostName, String password)  throws NSClient4JException
+</CODE>
+</PRE></DIV></DIV>
+  <LI>Call the <CODE>getPerfMonCounter(String counterName)</CODE> method. 
+</LI></OL><BR><BR>
+<P>That's pretty much it. Here's a simple command line example:</P>
+<DIV id=codewrap>
+<DIV id=codewrap98><PRE> <CODE>1 package com.marketwide.nagios;
+2
+3 /**
+4 * &lt;p&gt;Title: CLStat&lt;/p&gt;
+5 * &lt;p&gt;Description: Net Saint NT Client For Java Command Line Example&lt;/p&gt;
+6 * &lt;p&gt;
+7 * &lt;p&gt;
+8 * @author Whitehead (nwhitehe@yahoo.com)
+9 * @version 1.0
+10 */
+11
+12 public class CLStat {
+13   public static void main(String[] args) {
+14     try {
+15       NSClient4j client = new NSClient4j(args[0]);
+16       System.out.print("Result:" + client.getPerfMonCounter(args[1]));
+17     } catch (NSClient4JException e) {
+18       System.err.println("Exception Geting Stat:" + e);
+19     }
+20   }
+21 }
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<P>Here is an example of how I can get my file server's context switch rate:</P>
+<DIV id=codewrap>
+<DIV id=codewrap103><PRE> <CODE>C:\JBProjects\NSClient4J&gt; set CLASSPATH=%CLASSPATH%;.\nsclient4j.jar
+C:\JBProjects\NSClient4J&gt;java com.marketwide.nagios.CLStat 192.168.1.103 "\System\Context Switches/sec"
+Result:3393.68772
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<P>That's about as simple as an NSClient4j example gets. One counter you may be 
+interested in accessing frequently is the CPU utilization. Here is an example: 
+</P>
+<DIV id=codewrap>
+<DIV id=codewrap108><PRE> <CODE>C:\JBProjects\NSClient4J&gt;java com.marketwide.nagios.CLStat 192.168.1.103 "\Processor(_Total)\% Processor Time"
+Result:99.99995
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<P>Two things to note: First, the counter's naming convention may seem a bit 
+peculiar. The reason: because it is peculiar; but it is somewhat consistent. I 
+provide further explanation in the following section. </P>
+<P>Second, the result indicates my processor time is about 100 percent, which is 
+not actually true. It appears that the inquiry into the CPU utilization rate 
+actually causes the CPU utilization to jump to (nearly) 100 percent during the 
+instant of time which the inquiry occurs. This seems in line with the 
+<EM>Heisenberg Uncertainty Principle</EM>, which can be summarized as 
+<EM>nothing can be measured without affecting what you are trying to 
+measure</EM>. All the same, NSClient offers an alternate CPU measurement 
+provided in NSClient4j as the method <CODE>getCPUUsage()</CODE>. To offer some 
+consistency, a symbolic shortcut is provided in the 
+<CODE>getPerfMonCounter(String counterName)</CODE> call. If you request the 
+counter name CPU, under the covers, the alternate method will be called and 
+return a better reflection of your system's CPU utilization. The following call 
+displays how to retrieve the CPU utilization of the target NT server. </P>
+<DIV id=codewrap>
+<DIV id=codewrap118><PRE> <CODE>C:\JBProjects\NSClient4J&gt;java com.marketwide.nagios.CLStat 192.168.1.103 CPU
+Result:8
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<H3>Counter naming</H3>
+<P>I now return to a discussion on counter naming. For the most part, counter 
+naming is intuitive. A performance counter has somewhere between two and four 
+parts to its fully qualified name. The first part is the host name, which we 
+disregard in this case since it is not needed. (It can prove useful in other 
+scenarios, but that's another story.) The remaining three parts are: </P>
+<OL>
+  <LI>Performance object: A counter's general category. For example: 
+  <CODE>Processor</CODE>, <CODE>Memory</CODE>, <CODE>TCP</CODE>.<BR><BR>
+  <LI>Counter: The specific characteristic of the performance object you are 
+  interested in. For example, <CODE>Processor</CODE> contains the following 
+  counters, among others: <CODE>% Processor Time</CODE>, <CODE>% User 
+  Time</CODE> and <CODE>Interrupts/sec</CODE>. 
+  <LI>Instance: Some counters further break down the granularity of the counter 
+  itself into instances. For example, the <CODE>Processor</CODE>'s counters can 
+  apply to a specific CPU number or the total CPU resources, which on my super 
+  32 CPU file server would be either a number between 0 and 32, or 
+  <CODE>_Total</CODE>. </LI></OL><BR><BR>
+<P>When a counter lacks an instance, it has an intuitive name. For example:</P>
+<UL>
+  <LI><STRONG>Performance object</STRONG>: <CODE>Memory</CODE> 
+  <LI><STRONG>Counter</STRONG>: <CODE>% Committed Bytes In Use</CODE> 
+</LI></UL><BR><BR>
+<P>The instances, however, add some confusion. Consider this name that tells us 
+the total bytes per second being transferred by my wireless 802.11G network card 
+(as opposed to my internal regular 10/100 Ethernet Card): </P>
+<UL>
+  <LI><STRONG>Performance object</STRONG>: <CODE>Network Interface</CODE> 
+  <LI><STRONG>Counter</STRONG>: <CODE>Bytes Total/sec</CODE> 
+  <LI><STRONG>Instance</STRONG>: <CODE>D-Link AirPlus DWL-G650 Wireless Cardbus 
+  Adapter[rev.C] - Packet Scheduler Miniport</CODE> </LI></UL><BR><BR>
+<P>In summary:</P>
+<UL>
+  <LI><STRONG>Without instance</STRONG>: <CODE>\&lt;performance 
+  object&gt;\&lt;counter name&gt;</CODE> 
+  <LI><STRONG>With instance</STRONG>: <CODE>\&lt;performance 
+  object&gt;(&lt;instance name&gt;)\&lt;counter name&gt;</CODE> </LI></UL><BR><BR>
+<P>Figure 6 should help you navigate the conversion of a WPM counter from the 
+application to your code.</P>
+<CENTER>
+<P><A 
+href="http://www.javaworld.com/javaworld/jw-11-2004/images/jw-1108-windowspm6.jpg" 
+target=new_window 
+alt="Figure 6. How full counter names map to the WPM GUI. Click on thumbnail to view full-sized image."><IMG 
+height=225 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/jw-1108-windowspm6-thumb.jpg" 
+width=350></A></P>
+<P><STRONG>Figure 6. How full counter names map to the WPM GUI. Click on 
+thumbnail to view full-sized image.</STRONG></P></CENTER>
+<H3>Other nifty features of NSClient (and therefore NSClient4j)</H3>
+<P>NSClient has some extra built-in features to enhance Nagios's ability to 
+monitor the health of Windows servers. Most are also available in NSClient4j as 
+follows: </P>
+<UL>
+  <LI><CODE>java.util.Date getFileDate(String filename)</CODE>: Returns the date 
+  a file was last modified. 
+  <LI><CODE>java.lang.String getNSClientVersion()</CODE>: Returns the version of 
+  the NSClient service. 
+  <LI><CODE>java.util.Date getUpTimeDate()</CODE>: Returns the date the Windows 
+  server started. There are also methods to return the days, hours, minutes, or 
+  seconds since the Windows server started. 
+  <LI><CODE>boolean isServiceUp(String serviceName)</CODE>: Returns true if the 
+  named service is running on the target Windows server and false if it is not. 
+  <LI><CODE>boolean isProcessUp(String processName)</CODE>: Returns true if the 
+  named process is running on the target Windows server and false if it is not. 
+  </LI></UL><BR><BR>
+<H3>A final note on securing NSClient</H3>
+<P>As mentioned previously, NSClient's default password is <CODE>None</CODE>, 
+which is built into NSClient4j, as it also is in its Linux brethren, checknt. 
+The same applies to the default port of <CODE>1248</CODE>. For added security, 
+these can be overridden as follows: </P>
+<OL>
+  <LI>Open the Windows Registry Editor by invoking regedit.exe 
+  <LI>Find the branch called "My 
+  Computer\HKEY_LOCAL_MACHINE\SOFTWARE\NSClient\Params" 
+  <LI>You can now edit the <EM>password</EM> or <EM>port</EM> values 
+  <LI>Once they have been edited, you will need to restart the NetSaint NT Agent 
+  service to initiate the new values </LI></OL><BR><BR>
+<P>In the next example, I change the password to <CODE>mypassword</CODE> and the 
+port to <CODE>10007</CODE>. The example is a follow up to the simple 
+<CODE>CLStat</CODE> we looked at before, enhanced to account for a custom port 
+and password. It also uses the parameter-less constructor and the 
+correspondingly required <CODE>init()</CODE> method (see line 24): </P>
+<DIV id=codewrap>
+<DIV id=codewrap214><PRE> <CODE>1 package com.marketwide.nagios;
+2
+3 /**
+4 * &lt;p&gt;Title: CLStat2&lt;/p&gt;
+5 * &lt;p&gt;Description: Net Saint NT Client For Java Command Line Example 2&lt;/p&gt;
+6 * &lt;p&gt;
+7 * &lt;p&gt;
+8 * @author Whitehead (nwhitehe@yahoo.com)
+9 * @version 1.0
+10 */
+11
+12 public class CLStat2 {
+13   public static void main(String[] args) {
+14    try {
+15     if(args.length &lt; 4) {
+16      System.out.println("Usage: CLStat2 &lt;hostName&gt; &lt;port&gt;" +
+17                          " &lt;password&gt; &lt;counter name&gt;" );
+18      System.exit(-1);
+19     }
+20     NSClient4j client = new NSClient4j();
+21     client.setHostName(args[0]);
+22     client.setPortNumber(Integer.parseInt(args[1]));
+23     client.setPassword(args[2]);
+24     client.init();
+25     System.out.print("Result:" + client.getPerfMonCounter(args[3]));
+26    } catch (NSClient4JException e) {
+27      System.err.println("Exception Geting Stat:" + e);
+28   }
+29  }
+30 }
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<P>Here are two test runs:</P>
+<DIV id=codewrap>
+<DIV id=codewrap219><PRE> <CODE>C:\JBProjects\NSClient4J&gt;java com.marketwide.nagios.CLStat2 192.168.1.103 10007 mypassword CPU
+Result:18
+C:\JBProjects\NSClient4J&gt;java com.marketwide.nagios.CLStat2 192.168.1.103 10007 notmypassword CPU
+Result:ERROR:Wrong password
+</CODE>
+</PRE></DIV></DIV><BR><BR>
+<H3>Conclusion</H3>
+<P>NSClient4j in conjunction with NSClient makes accessing WPM data from Java 
+really easy, and in conjunction with its multiplatform capabilities, it can be 
+integrated into a wide variety of monitoring solutions. The API is still being 
+refined and I would be happy to receive your <A 
+href="http://www.javaworld.com/feedback" target=_blank>feedback</A> and requests 
+for enhancements. </P>
+<P>In Part 2, we will investigate how to integrate with JMX and leverage the 
+benefits of monitoring these statistics through JMX. </P>
+<H3>Author Bio</H3>Nicholas Whitehead is a Java architect in New Jersey. 
+<DIV class=separator><!-- xxxxxxxxxxxxxx --></DIV>
+<P><A name=discuss></A>
+<H3>Discuss</H3><A 
+href="http://www.javaworld.com/javaforums/newpost.php?Cat=0&amp;Board=959504&amp;page=0">Start 
+a new discussion</A> or jump into one of the threads below:
+<P></P>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TD class=tdheader 
+    style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px"><A 
+      href="http://www.javaworld.com/javaforums/postlist.php?Cat=0&amp;Board=959504&amp;page=0&amp;sb=1">Subject 
+      </A></TD>
+    <TD class=tdheader 
+    style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; WIDTH: 2%; PADDING-TOP: 3px" 
+    noWrap><A 
+      href="http://www.javaworld.com/javaforums/postlist.php?Cat=0&amp;Board=959504&amp;page=0&amp;sb=9">Replies</A> 
+    </TD>
+    <TD class=tdheader 
+    style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px" 
+    noWrap width="20%"><A 
+      href="http://www.javaworld.com/javaforums/postlist.php?Cat=0&amp;Board=959504&amp;page=0&amp;sb=6">Last 
+      post </A><IMG height=8 alt="" 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/descend.gif" 
+      width=7 border=0> </TD></TR><!-- BEGIN POST LOOP DO NOT DELETE -->
+  <TR>
+    <TD class=lighttable 
+    style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px" 
+    vAlign=top align=left width="48%"><IMG height=11 alt=. hspace=0 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/blank.gif" 
+      width=0> <A 
+      href="http://www.javaworld.com/javaforums/showflat.php?Cat=0&amp;Number=57456&amp;an=0&amp;page=0#Post57456">Where 
+      do you find the counters?</A><BR><EM>By databias </EM></TD>
+    <TD class=lighttable style="PADDING-RIGHT: 6px" vAlign=top noWrap 
+    align=right>0 </TD>
+    <TD class=lighttable vAlign=top noWrap align=middle><SPAN 
+      class=small>10/24/07 11:25 PM <BR><A 
+      href="http://www.javaworld.com/javaforums/showflat.php?Cat=0&amp;Number=57456&amp;Main=57456#Post57456">by 
+      Anonymous</A> </SPAN></TD></TR>
+  <TR>
+    <TD class=darktable 
+    style="PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px" 
+    vAlign=top align=left width="48%"><IMG height=11 alt=. hspace=0 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/blank.gif" 
+      width=0> <A 
+      href="http://www.javaworld.com/javaforums/showflat.php?Cat=0&amp;Number=13201&amp;an=0&amp;page=0#Post13201">Access 
+      Windows Performance Monitor</A><BR><EM>By <A 
+      href="http://www.javaworld.com/javaforums/showprofile.php?Cat=0&amp;User=3&amp;Board=959504&amp;what=ubbthreads&amp;page=0"><FONT 
+      class=adminname>JavaWorld</FONT></A><IMG alt=Administrator 
+      src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/adm.gif" 
+      border=0> </EM></TD>
+    <TD class=darktable style="PADDING-RIGHT: 6px" vAlign=top noWrap 
+      align=right>0 </TD>
+    <TD class=darktable vAlign=top noWrap align=middle><SPAN 
+      class=small>07/23/07 06:03 AM <BR><A 
+      href="http://www.javaworld.com/javaforums/showflat.php?Cat=0&amp;Number=50862&amp;Main=13201#Post50862">by 
+      Anonymous</A> 
+</SPAN></TD></TR><!-- END OF LOOP --></TBODY></TABLE></TD></TR></TABLE><BR><BR><!-- CONTENT ENDS HERE --><!--stopindex--><!-- mypages: (none) --><!--story tools start-->
+<SCRIPT>
+<!--
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+var test = "/adtran/solutionDetails.jsp?subject="
+eval(targ+".location='"+test+"'+'"+selObj.options[selObj.selectedIndex].value+"'")
+  if (restore) selObj.selectedIndex=0;
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</SCRIPT>
+
+<DIV id=storytools>
+<UL>
+  <FORM name=print action=/cgi-bin/mailto/x_java.cgi method=post><INPUT 
+  type=hidden 
+  value=/export/home/httpd/javaworld/javaworld/jw-11-2004/jw-1108-windowspm.html 
+  name=pagetosend> <INPUT type=hidden 
+  value=/javaworld/jw-11-2004/jw-1108-windowspm.html name=pagename> <INPUT 
+  type=hidden 
+  value=http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html 
+  name=pageurl> <INPUT type=hidden value=jw_core name=site>
+  <LI><INPUT class=printer title=print type=image height=13 alt=print width=18 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/print06-icon.gif" 
+  border=0> <A href="javascript:document.forms.print.submit();">Print</A> 
+</FORM><!-- 
+						<li><img src="/includes/styles/i/ico/email-06-icon.gif" width="17" height="13" /><a href="javascript:;" onClick="MM_openBrWindow('/mailto/mailform.jsp?refpage=jw&pagetosend=/export/home/httpd/javaworld/javaworld/jw-11-2004/jw-1108-windowspm.html&pagename=/javaworld/jw-11-2004/jw-1108-windowspm.html&pageurl=/javaworld/jw-11-2004/jw-1108-windowspm.html','Registration','scrollbars=yes,resizable=yes,width=510,height=500')">E-Mail article </a></li>
+--></LI>
+  <LI><IMG height=13 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/email-06-icon.gif" 
+  width=17><A 
+  onclick="MM_openBrWindow('/storytools/send_to_friend-form.jsp?rxid=81086&amp;refpage=jw&amp;pagetosend=/export/home/httpd/javaworld/javaworld/jw-11-2004/jw-1108-windowspm.html&amp;pagename=/javaworld/jw-11-2004/jw-1108-windowspm.html&amp;pageurl=/javaworld/jw-11-2004/jw-1108-windowspm.html','Registration','scrollbars=yes,resizable=yes,width=625,height=480')" 
+  href="javascript:;">E-Mail article </A></LI>
+  <LI><IMG height=13 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/fdbck06-icon.gif" 
+  width=14><A 
+  onclick="MM_openBrWindow('/askTheExpert.jsp?pagename=http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html&amp;pagename=/javaworld/jw-11-2004/jw-1108-windowspm.html&amp;pageurl=/javaworld/jw-11-2004/jw-1108-windowspm.html&amp;pubsite=j','Registration','scrollbars=yes,resizable=yes,width=500,height=600')" 
+  href="javascript:;">Feedback</A> </LI>
+  <LI><IMG height=14 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/add-icon.gif" 
+  width=14><A 
+  href="javascript:location.href='http://del.icio.us/post?v=4;url='+encodeURIComponent(location.href)+';title='+encodeURIComponent(document.title)">Add 
+  to del.icio.us</A> </LI>
+  <LI class=next>
+  <SCRIPT 
+  src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/nextlink.js"></SCRIPT>
+  </LI></UL></DIV>
+<DIV class=separatorzero><!-- xxxxxxxxxxxxxx --></DIV><!--story tools end--><A 
+name=resources></A><STRONG>Resources</STRONG><BR><EXTERNALLINKS 
+no-escaping="yes">
+<DIV class=rxbodyfield>
+<UL>
+  <LI>"Access Windows Performance Monitor Counters from Java," Nicholas 
+  Whitehead (<EM>JavaWorld</EM>): 
+  <LI>
+  <UL>
+    <LI>Part 1Use a simple Java API to gather valuable performance 
+    statistics<BR><A 
+    href="http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html">http://www.javaworld.com/javaworld/jw-11-2004/jw-1108-windowspm.html</A> 
+    (November 2004) 
+    <LI>Part 2Integrate NSClient4j with Java Management Extensions<BR><A 
+    href="http://www.javaworld.com/javaworld/jw-09-2005/jw-0919-windowspm.html">http://www.javaworld.com/javaworld/jw-09-2005/jw-0919-windowspm.html</A> 
+    (September 2005) </LI></UL>
+  <LI>NSClient<BR><A 
+  href="http://nsclient.ready2run.nl/">http://nsclient.ready2run.nl/</A> 
+  <LI>Nagios<BR><A href="http://www.nagios.org/">http://www.nagios.org/</A> 
+  <LI>Download NSClient4j:<BR><A 
+  href="https://nsclient4j.dev.java.net/files/documents/2366/7972/NSClient4J.jar">https://nsclient4j.dev.java.net/files/documents/2366/7972/NSClient4J.jar</A> 
+
+  <LI>The NSClient4j Javadoc:<BR><A 
+  href="https://nsclient4j.dev.java.net/files/documents/2366/7973/NSClient4j.html">https://nsclient4j.dev.java.net/files/documents/2366/7973/NSClient4j.html</A> 
+
+  <LI>For more articles on Java APIs, browse the <STRONG>API</STRONG> section of 
+  <EM>JavaWorld</EM>'s Topical Index<BR><A 
+  href="http://www.javaworld.com/channel_content/jw-apis-index.shtml">http://www.javaworld.com/channel_content/jw-apis-index.shtml</A> 
+  </LI></UL></DIV></EXTERNALLINKS><BR></DIV></DIV><!--include virtual="/cis/ibm_j559b/cis_j559b_ibm_export.html" --><BR 
+clear=all><!--include virtual="/includes/ads-bottom.html"-->
+<DIV class=separator><!-- xxxxxxxxxxxxxx --></DIV>
+<DIV id=sponsoredlinks><!--<h5>Sponsored links</h5>-->
+<SCRIPT 
+src="Z:\javabatch\today\swing\Access Windows Performance Monitor counters from Java, Part 1 - Java World_files\jsct(1).1]" 
+type=text/javascript></SCRIPT>
+
+<DIV id=toplinks>
+<P><A title=Symphoniq onclick="" 
+href="http://ad.doubleclick.net/clk;194018692;12174868;q?https://www.accelacomm.com/jlp/Post_80269955_C812/7/80269955/" 
+target=_blank 
+name="&amp;lid=rid_129521 1600861 J812 Symphoniq Text Link JW "><SPAN>Free 
+Download - 5 Minute Product Review. When slow equals Off: Manage the complexity 
+of Web applications </SPAN></A><STRONG>- Symphoniq</STRONG> </P>
+<P class=dotted><IMG height=2 alt="" 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/spacer.gif" 
+width=400></P>
+<P><A title=Symphoniq onclick="" 
+href="http://ad.doubleclick.net/clk;194018799;12174868;y?https://www.accelacomm.com/jlp/Post_80270075_C812/7/80270075/" 
+target=_blank 
+name="&amp;lid=rid_129522 1600862 J812 Symphonoq Text LInk JW"><SPAN>Free 
+Download - 5 Minute Product Review. Realize the benefits of real user monitoring 
+in less than an hour.</SPAN> </A><STRONG>- Symphoniq</STRONG> </P>
+<P><A title="Agitar Software" onclick="" 
+href="http://ad.doubleclick.net/clk;189819974;12174868;g?http://www.agitar.com/javacoverage?utm_source=javaworld&amp;utm_medium=textlink&amp;utm_content=coverage&amp;utm_campaign=javaworld-coverage-sept-2007" 
+target=_blank 
+name="&amp;lid=rid_127952 1442065 Agitar March 2008 JW Text Link"><SPAN>80% Java 
+Test Coverage! Now guaranteed with automated JUnit test generation. Free 
+trial!</SPAN> </A><STRONG>- Agitar Software</STRONG> </P>
+<P class=dotted><IMG height=2 alt="" 
+src="Access Windows Performance Monitor counters from Java, Part 1 - Java World_files/spacer.gif" 
+width=400></P>
+<P><A title=Sun onclick="" 
+href="http://ad.doubleclick.net/clk;187005119;12174868;i?http://ad.doubleclick.net/click;h=v2|393B|0|0|%2a|x;187957407;0-0;0;24647341;31-1|1;24749029|24766882|1;;%3fhttp://www.sun.com/software/solaris/get.jsp?cid=923332" 
+target=_blank 
+name="&amp;lid=rid_127189 1552958 Sun Java FY08 Q3 Software"><SPAN>Solaris gives 
+you freedom of choice. Run everywhere &amp; anywhere. Learn More. 
+</SPAN></A><STRONG>- Sun</STRONG> </P></DIV>
+<DIV id=middlelinks>
+<TABLE id=nwtextlinks cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR>
+    <TD><A title=Stelligent onclick="" 
+      href="http://ad.doubleclick.net/clk;189807992;12174868;d?http://www.stelligent.com/content/view/8/39/" 
+      target=_blank 
+      name="&amp;lid=rid_127932 1392283 Andy Glover Java Text Link">We're hiring 
+      Senior Software Consultants! Come work for the fastest-growing Agile 
+      consultancy in the mid-Atlantic region!</A> <STRONG>- Stelligent</STRONG> 
+    </TD>
+    <TD>&nbsp;</TD></TR></TBODY></TABLE></DIV><!--<div id="bottomlinks">
+		<!-- SSI Error --><BR 
+clear=all><!--</div>--></DIV>
+<DIV class=separator><!-- xxxxxxxxxxxxxx --></DIV>
+<DIV id=rcfooter><STRONG>RESEARCH CENTERS: </STRONG><A 
+href="http://www.javaworld.com/channel_content/jw-core-index.html"><STRONG>Java 
+Standard Edition</STRONG></A> | <A 
+href="http://www.javaworld.com/channel_content/jw-enterprise-index.html"><STRONG>Java 
+Enterprise Edition</STRONG></A> | <A 
+href="http://www.javaworld.com/channel_content/jw-micro-index.html"><STRONG>Java 
+Micro Edition </STRONG></A>| <A 
+href="http://www.javaworld.com/channel_content/jw-applied-index.html"><STRONG>Development 
+Tools</STRONG></A> 
+<DIV align=center><A 
+href="http://www.javaworld.com/info/jw-about-index.html">About Us</A> | <A 
+href="http://www.javaworld.com/info/jw-advertise.html">Advertise</A> | <A 
+href="http://www.javaworld.com/info/jw-masthead.html">Contact Us</A> | <A 
+href="http://www.javaworld.com/info/jw-privacy.html">Terms of 
+Service/Privacy</A> </DIV>
+<DIV align=center><A 
+href="http://www.javaworld.com/javaworld/common/jw-copyright.html">Copyright</A>, 
+2006-2008 Network World, Inc. All rights reserved.</DIV></DIV></DIV>
+<DIV id=footer><SPAN><A href="http://www.idg.net/"><STRONG>IDG 
+Network:</STRONG></A> <A href="http://www.cio.com/">CIO</A> <A 
+href="http://www.computerworld.com/">Computerworld</A> <A 
+href="http://www.csoonline.com/">CSO</A> <A href="http://demo.com/">Demo</A> <A 
+href="http://www.gamestar.com/">GamePro</A> <A 
+href="http://www.games.net/">Games.net</A> <A 
+href="http://www.idgconnect.com/">IDGconnect.com</A> <A 
+href="http://www.idgworldexpo.com/">IDG World Expo</A> <A 
+href="http://www.infoworld.com/">Infoworld</A> <A 
+href="http://www.linuxworld.com/">Linuxworld.com</A> <A 
+href="http://www.macuser.com/">MacUser</A> <A 
+href="http://www.macworld.com/">Macworld</A> <A 
+href="http://www.networkworld.com/">NetworkWorld.com</A> <A 
+href="http://www.pcworld.com/">PC World</A> <A 
+href="http://www.playlistmag.com/">Playlistmag.com</A></SPAN></DIV><!-- start Vibrant Media IntelliTXT script section -->
+<SCRIPT src="" type=text/javascript></SCRIPT>
+
+<SCRIPT language=javascript>
+	if (typeof menu_lookup == "function") menu_lookup();
+</SCRIPT>
+<!-- end Vibrant Media IntelliTXT script section --><!-- begin ad tag  (tile=99) -->
+<SCRIPT language=JavaScript type=text/javascript>
+ord=Math.random()*10000000000000000;
+document.write('<script language="JavaScript" src="http://ad.doubleclick.net/adj/idg.us.nwf.jw_core/;tile=99;dcopt=ist;sz=1x1;ord=' + ord + '?" type="text/javascript"><\/script>');
+</SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>if ((!document.images && navigator.userAgent.indexOf('Mozilla/2.') >= 0)|| navigator.userAgent.indexOf("WebTV") >= 0) {document.write('<a href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;tile=99;sz=1x1;ord=' + ord + '?" target="_blank"><img src="http://ad.doubleclick.net/ad/idg.us.nwf.jw_core/;tile=99;sz=1x1;ord=' + ord + '?" width="1" height="1" border="0" alt=""><\/a>');}</SCRIPT>
+<NOSCRIPT><A 
+href="http://ad.doubleclick.net/jump/idg.us.nwf.jw_core/;tile=99;sz=1x1;ord='%20+%20ord%20+%20'?" 
+target=_blank><IMG height=1 alt="" 
+src="Z:\javabatch\today\swing\Access Windows Performance Monitor counters from Java, Part 1 - Java World_files\817-grey(2).gif" 
+width=1 border=0></A></NOSCRIPT> <!-- End ad tag --></DIV></DIV></BODY></HTML>

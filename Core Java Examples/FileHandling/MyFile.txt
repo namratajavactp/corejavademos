@@ -1,0 +1,7 @@
+Hello
+This is to teach you file handling in Java'
+Its very simple
+All you have to do is:
+1. Open a file using File Object.
+2. Use the DataInputStream or FileInputStream or FileReader to read the file
+3. Close the file.

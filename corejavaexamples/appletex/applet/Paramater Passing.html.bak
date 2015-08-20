@@ -1,0 +1,4 @@
+ <APPLET CODE="MyApplet.class" WIDTH=100 HEIGHT=100> 
+  <param name="font" value="Times New Roman"> 
+  <param name="size" value="24"> 
+ </APPLET> 

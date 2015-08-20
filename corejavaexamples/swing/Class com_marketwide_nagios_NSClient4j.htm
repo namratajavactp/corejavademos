@@ -1,0 +1,378 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)https://nsclient4j.dev.java.net/files/documents/2366/7973/NSClient4j.html -->
+<HTML><HEAD><TITLE>Class com.marketwide.nagios.NSClient4j</TITLE><!--JBuilder QuickDoc-->
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.2180" name=GENERATOR></HEAD>
+<BODY>
+<H2><FONT size=-1>com.marketwide.nagios</FONT> <BR>Class NSClient4j</H2>
+<DL>
+  <DT>public class <B>NSClient4j</B> </DT></DL>
+<DL>
+  <DD>
+  <P>Title: NSClient4J</P>
+  <P>Description: Net Saint NT Client For Java</P>
+  <P>Copyright: Copyright (c) 2004</P>
+  <P>Company: Marketwide Software</P>
+  <P>This is a Java implementation of the nagios plugin <B>check_nt</B>. 
+  <P>Some of the calls are not implemented since they are superfluous and can be 
+  achieved with the <I>getPerfMonCounter</I> call. 
+  <P>These are:
+  <UL>
+    <LI>CHECK_USEDDISKSPACE 
+    <LI>CHECK_MEMUSE </LI></UL>
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Version:</B>
+  <DD>1.0 
+  <DT><B>Author:</B>
+  <DD>Whitehead (nwhitehe@yahoo.com) </DD></DL>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=1>
+  <TBODY>
+  <TR bgColor=#ccccff>
+    <TD><FONT size=+2><B>Field Detail</B> </FONT></TD></TR></TBODY></TABLE>
+<H3>hostName</H3><PRE>protected String <B>hostName</B></PRE>
+<DL>
+  <DD>The string representation of the host name to connect to
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<H3>portNumber</H3><PRE>protected int <B>portNumber</B></PRE>
+<DL>
+  <DD>The port number NSClient is running on. Default is 1248
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<H3>password</H3><PRE>protected String <B>password</B></PRE>
+<DL>
+  <DD>The password for connecting to NSClient. Default is "None"
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<H3>socket</H3><PRE>protected Socket <B>socket</B></PRE>
+<DL>
+  <DD>The socket for communicating with Remote NSClient
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=1>
+  <TBODY>
+  <TR bgColor=#ccccff>
+    <TD><FONT size=+2><B>Constructor Detail</B> </FONT></TD></TR></TBODY></TABLE>
+<H3>NSClient4j</H3><PRE>public <B>NSClient4j</B>(String&nbsp;hostName)</PRE>
+<DL>
+  <DD>NSClient4j Constructor.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>hostName</CODE> - String The name or IP address of the host that is 
+  running NSClient 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>NSClient4j</H3><PRE>public <B>NSClient4j</B>(String&nbsp;hostName,
+                  int&nbsp;portNumber)</PRE>
+<DL>
+  <DD>NSClient4j Constructor.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>hostName</CODE> - String The name or IP address of the host that is 
+  running NSClient 
+  <DD><CODE>portNumber</CODE> - int The port number NSClient is listening on if 
+  not the default 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>NSClient4j</H3><PRE>public <B>NSClient4j</B>(String&nbsp;hostName,
+                  int&nbsp;portNumber,
+                  String&nbsp;password)</PRE>
+<DL>
+  <DD>NSClient4j Constructor.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>hostName</CODE> - String The name or IP address of the host that is 
+  running NSClient 
+  <DD><CODE>portNumber</CODE> - int The port number NSClient is listening on if 
+  not the default 
+  <DD><CODE>password</CODE> - String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>NSClient4j</H3><PRE>public <B>NSClient4j</B>(String&nbsp;hostName,
+                  String&nbsp;password)</PRE>
+<DL>
+  <DD>NSClient4j Constructor.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>hostName</CODE> - String The name or IP address of the host that is 
+  running NSClient 
+  <DD><CODE>password</CODE> - String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>NSClient4j</H3><PRE>public <B>NSClient4j</B>()</PRE>
+<DL>
+  <DD>Parameterless constructor. Unlike the other constructors, this one does 
+  not init the socket layer. Once the configuration parameters have been set, 
+  the init() method must be called before the client can be used.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=1>
+  <TBODY>
+  <TR bgColor=#ccccff>
+    <TD><FONT size=+2><B>Method Detail</B> </FONT></TD></TR></TBODY></TABLE>
+<H3>setSocketTimeOut</H3><PRE>public void <B>setSocketTimeOut</B>(int&nbsp;timeout)</PRE>
+<DL>
+  <DD>Sets the time out on the NSRequests. If the request times out, it will 
+  throw an exception. The default is 5000 ms
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>timeout</CODE> - int the request timeout in milliseconds </DD></DL>
+<HR>
+
+<H3>init</H3><PRE>public void <B>init</B>()</PRE>
+<DL>
+  <DD>Initializes the socket layer. Intended for use in concert with the 
+  parameterless constructor
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>initSocket</H3><PRE>protected void <B>initSocket</B>()</PRE>
+<DL>
+  <DD>Opens the socket as configured to the remote NSClient. Initializes all the 
+  io streams.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Throws:</B>
+  <DD><CODE>UnknownHostException</CODE> - 
+  <DD><CODE>IOException</CODE> - </DD></DL>
+<HR>
+
+<H3>close</H3><PRE>public void <B>close</B>()</PRE>
+<DL>
+  <DD>Closes the socket
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<H3>finalize</H3><PRE>public void <B>finalize</B>()</PRE>
+<DL>
+  <DD>Last ditch effort to close the socket
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL></DL>
+<HR>
+
+<H3>getNSClientVersion</H3><PRE>public String <B>getNSClientVersion</B>()</PRE>
+<DL>
+  <DD>Returns the version of the NSClient that is connected to.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getPerfMonCounter</H3><PRE>public String <B>getPerfMonCounter</B>(String&nbsp;counterName)</PRE>
+<DL>
+  <DD>
+  <P>Retrieves the value of a NT Performance Monitor counter value. 
+  <P>Example counter string are: 
+  <UL>
+    <LI>\\ProcessorPerformance(ACPI\\GenuineIntel_-_x86_Family_6_Model_9\\_0_0)\\Processor 
+    Frequency 
+    <LI>\\Processor(_Total)\\% Processor Time </LI></UL>
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>counterName</CODE> - String 
+  <DT><B>Returns:</B>
+  <DD>String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getCPUUsage</H3><PRE>public String <B>getCPUUsage</B>()</PRE>
+<DL>
+  <DD>This method is needed since calling the perfMon counter always show close 
+  to 100 % util.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getUpTimeSeconds</H3><PRE>public int <B>getUpTimeSeconds</B>()</PRE>
+<DL>
+  <DD>Retrieves the up time of the server in seconds
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>int The up time in seconds 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getUpTimeMinutes</H3><PRE>public int <B>getUpTimeMinutes</B>()</PRE>
+<DL>
+  <DD>Retrieves the up time of the server in minutes
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>int The up time in minutes (rounded) 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getUpTimeHours</H3><PRE>public int <B>getUpTimeHours</B>()</PRE>
+<DL>
+  <DD>Retrieves the up time of the server in hours
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>int The up time in hours (rounded) 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getUpTimeDays</H3><PRE>public float <B>getUpTimeDays</B>()</PRE>
+<DL>
+  <DD>Retrieves the up time of the server in Days
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>int The up time in days 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getUpTimeDate</H3><PRE>public Date <B>getUpTimeDate</B>()</PRE>
+<DL>
+  <DD>Retrieves the up time of the server as the date the server started
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>Date The date the server started. 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>isServiceUp</H3><PRE>public boolean <B>isServiceUp</B>(String&nbsp;serviceName)</PRE>
+<DL>
+  <DD>Tests a service by service name. If the service is up, returns true. If it 
+  is stopped, or unknown, returns a false.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>serviceName</CODE> - String 
+  <DT><B>Returns:</B>
+  <DD>boolean 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>isProcessUp</H3><PRE>public boolean <B>isProcessUp</B>(String&nbsp;processName)</PRE>
+<DL>
+  <DD>Tests a process by process name. If process is running, returns true. If 
+  process is not running, or unknown, returns false.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>processName</CODE> - String 
+  <DT><B>Returns:</B>
+  <DD>boolean 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getFileDate</H3><PRE>public Date <B>getFileDate</B>(String&nbsp;fileName)</PRE>
+<DL>
+  <DD>Gets the file date of the passed file name
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>fileName</CODE> - String 
+  <DT><B>Returns:</B>
+  <DD>Date 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+
+<H3>getPortNumber</H3><PRE>public int <B>getPortNumber</B>()</PRE>
+<DL>
+  <DD>Returns the port number connected to
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>int </DD></DL>
+<HR>
+
+<H3>getHostName</H3><PRE>public String <B>getHostName</B>()</PRE>
+<DL>
+  <DD>Returns the host name connected to
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Returns:</B>
+  <DD>String </DD></DL>
+<HR>
+
+<H3>submittRequest</H3><PRE>protected synchronized String <B>submittRequest</B>(String&nbsp;request)</PRE>
+<DL>
+  <DD>Generic request submission method used by all NSClient4j calls.
+  <DL>
+    <DD></DD></DL></DD></DL>
+<DL>
+  <DT><B>Parameters:</B>
+  <DD><CODE>request</CODE> - String 
+  <DT><B>Returns:</B>
+  <DD>String 
+  <DT><B>Throws:</B>
+  <DD><CODE>NSClient4JException</CODE> - </DD></DL>
+<HR>
+</BODY></HTML>

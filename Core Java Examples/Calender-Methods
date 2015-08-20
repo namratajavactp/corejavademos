@@ -1,0 +1,47 @@
+System.out.println("Various get methods 
+
+of the calendar class:");
+        Calendar calender = Calendar.getInstance();
+
+        System.out.println("Year   : " 
+
++ calender.get(Calendar.YEAR));
+        System.out.println("Month    : " 
+
++ calender.get(Calendar.MONTH));
+        System.out.println("Day of Month  : " 
+
++ calender.get(Calendar.DAY_OF_MONTH));
+        System.out.println("Day of Week  : " 
+
++ calender.get(Calendar.DAY_OF_WEEK));
+        System.out.println("Day of Year  : " 
+
++ calender.get(Calendar.DAY_OF_YEAR));
+        System.out.println("Week of Year  : " 
+
++ calender.get(Calendar.WEEK_OF_YEAR));
+        System.out.println("Week of Month  : " 
+
++ calender.get(Calendar.WEEK_OF_MONTH));
+        System.out.println
+               ("Day of the Week in Month : " 
+
++ calender.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+        System.out.println("Hour        
+
+ : " + calender.get(Calendar.HOUR));
+        System.out.println("AM PM               
+
+     : " + calender.get(Calendar.AM_PM));
+        System.out.println("Hour of the Day       
+
+   : " + calender.get(Calendar.HOUR_OF_DAY));
+        System.out.println("Minute                 
+
+  : " + calender.get(Calendar.MINUTE));
+        System.out.println("Second                  
+
+ : " + calender.get(Calendar.SECOND));
+        System.out.println();
+

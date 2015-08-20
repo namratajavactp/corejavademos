@@ -1,0 +1,32 @@
+Bug ID:  4966109  
+Votes  0  
+Synopsis  Popup is not populated by mouse ations on light weight components without mouse  
+Category  java:classes_swing  
+Reported Against  tiger-beta  
+Release Fixed  1.5(tiger-b41)  
+State  Closed, fixed  
+Related Bugs  4966110  
+Submit Date  10-DEC-2003  
+Description  Popup is not populated by mouse ations on light weight components without mouse listener. 
+Like The JLabel does not show Popup menu when right clicked, for the popup to show we have to add a empty mouse listener to the JLabel. 
+ 
+Work Around  N/A
+ 
+Evaluation  
+
+
+
+The reason here is that any lightweight component that does not have at least
+one mouse listener attached will not receive mouse events. This means that
+even AWTEventListener added directly to the Toolkit will receive this event
+as if it occured on the nearest parent of this component which do have a mouse
+listener or is heavyweigth.
+
+The idea of the suggested fix is to modify the
+JComponent.setComponentPopupMenu() to enable mouse events on the lightweight
+component if user passes not a null value as parameter. This will tell the 
+LightWeightDispatcher to deliver events to this copmponent even if this
+component does not have mouse listeners.
+
+
+ 

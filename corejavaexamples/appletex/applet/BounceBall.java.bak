@@ -1,0 +1,92 @@
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.*;
+
+/*
+<APPLET
+    CODE=BounceBall.class
+    WIDTH=200
+    HEIGHT=200 >
+</APPLET>
+*/
+
+public class BounceBall extends Applet  {
+int x,y;
+Thread t;
+String s;
+
+    public void init(){
+
+		x=50;
+		y=50;
+		t=new Thread(new Inner());
+
+		
+		 System.out.println("applet init");
+		 s="applet init";
+    }
+
+
+
+
+
+     public void start()
+	{ System.out.println("applet started");
+	   s="applet started";
+		 t.start();
+
+
+		 
+
+	}
+
+
+class Inner implements Runnable
+{
+
+	public void run()
+	{
+		while(true)
+		{
+			if(x==150 && y==150)
+				x=y=50;
+
+			 x++;
+			 y++;
+			BounceBall.this. repaint();
+			try
+			{
+			Thread.sleep(500);
+			}
+			catch(Exception e) { e.printStackTrace();}
+
+
+
+		}
+
+	}
+}
+
+
+public void paint(Graphics g)
+	{
+		g.setColor(Color.BLUE);
+		g.fillOval(x,y,100,100);
+
+		g.drawString(300,300,s);
+	}
+
+
+
+
+		public void stop(){ System.out.println("applet stopped");
+		s="applet stooped";
+		t.stop();
+		}
+
+		public void destroy()
+		{ System.out.println("applet destroyed");
+		  s="applet destroyed";
+		}
+    
+}

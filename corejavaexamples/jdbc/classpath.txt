@@ -1,0 +1,2 @@
+D:\oracle\ora90\jdbc\lib\classes12.jar for type 2
+D:\oracle\ora90\jdbc\lib\classes111.jar for type 4

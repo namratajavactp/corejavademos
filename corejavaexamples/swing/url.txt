@@ -1,0 +1,2 @@
+file:///Z:/joshua/uiswing/components/example-1dot4/index.html#TextComponentDemo
+http://www.javaworld.com/javaworld/

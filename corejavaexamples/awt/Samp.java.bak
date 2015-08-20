@@ -1,0 +1,43 @@
+class CheckBoxSamp extends Frame implements ItemListener 
+{
+	CheckBox c1,c2,c3;
+	String msg="";
+	CheckBoxSamp(String title)
+	{
+		super(title);
+		setLayout(new FlowLayout());
+		c1=new CheckBox("C",true);
+		c2=new CheckBox("C++");
+		c3=new CheckBox("Java");
+		add(c1);
+		add(c2);
+		add(c3);
+		c1.addItemListener(this);
+		c2.addItemListener(this);
+		c3.addItemListener(this);
+		addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent we){setVisible(false);}});
+		setSize(300,300);
+		setVisible(true);
+	}
+   
+    public void itemStateChanged(ItemEvent ie)
+	{
+		if(ie.paramString().equals("C"));
+		msg="C :Selected";
+		else if(ie.paramString().equals("C++");
+		msg="C++ :Selected";
+		else if(ie.paramString().equals("Java");
+		msg="Java Selected";
+		repaint();
+	}
+
+     public void paint(Graphics g)
+	{
+		 g.drawString(msg,40,200);
+	}
+
+	public static void main(String[] args) 
+	{
+		CheckBoxSamp chk=new CheckBoxSamp("ChekBoxExample with ItemListener");
+	}
+}

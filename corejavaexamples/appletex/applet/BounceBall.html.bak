@@ -1,0 +1,9 @@
+<HTML>
+<HEAD>
+<TITLE>List Applet</TITLE>
+</HEAD>
+<BODY>
+<applet code="BounceBall.class" height="500" width="500">
+</applet>
+</BODY>
+</HTML>
